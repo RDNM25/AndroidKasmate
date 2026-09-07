@@ -14,7 +14,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.arunk.dashboardlogin.ui.theme.DashboardLoginTheme
 
-
 class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,7 +38,7 @@ class MainActivity : ComponentActivity() {
                         composable("login") {
                             Loginscreen(
                                 onLoginSuccess = {
-                                    navController.navigate("dashboard")
+                                    navController.navigate("kas")
                                 },
                                 onNavigateToRegister = {
                                     navController.navigate("register")
@@ -59,15 +58,27 @@ class MainActivity : ComponentActivity() {
                             )
                         }
 
-                        // Halaman 2: Dashboard
+                        // Halaman 2: Uang Kas (home setelah login)
+                        composable("kas") {
+                            KasScreen(
+                                onProfileClick = {
+                                    navController.navigate("dashboard")
+                                },
+                                onHistoryClick = {
+                                    navController.navigate("history")
+                                }
+                            )
+                        }
+
+                        // Halaman 3: Dashboard (dibuka lewat ikon profil)
                         composable("dashboard") {
                             DashboardScreen(
-                                onDataClick = {
-                                    navController.navigate("data")
+                                onBack = {
+                                    navController.popBackStack()
                                 },
                                 onLogout = {
                                     navController.navigate("login") {
-                                        popUpTo("dashboard") {
+                                        popUpTo("kas") {
                                             inclusive = true
                                         }
                                     }
@@ -75,9 +86,9 @@ class MainActivity : ComponentActivity() {
                             )
                         }
 
-                        // Halaman 3: Data Mahasiswa
-                        composable("data") {
-                            DataScreen(
+                        // Halaman 4: Riwayat Transaksi
+                        composable("history") {
+                            HistoryScreen(
                                 onBack = {
                                     navController.popBackStack()
                                 }
