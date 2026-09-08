@@ -8,10 +8,13 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Visibility
@@ -54,12 +57,14 @@ fun RegisterScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
+            .verticalScroll(rememberScrollState())
+            .imePadding()
     ) {
         // Curved red header
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(285.dp)
+                .height(240.dp)
                 .background(
                     color = BrandRed,
                     shape = RoundedCornerShape(bottomStart = 48.dp, bottomEnd = 48.dp)
@@ -68,12 +73,12 @@ fun RegisterScreen(
         ) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Image(
-                    painter = painterResource(id = R.drawable.app_logo),
+                    painter = painterResource(id = R.drawable.app_logo_display),
                     contentDescription = "App logo",
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
-                        .size(180.dp)
-                        .clip(RoundedCornerShape(20.dp))
+                        .size(100.dp)
+                        .clip(RoundedCornerShape(24.dp))
                 )
 
                 Spacer(modifier = Modifier.height(14.dp))
