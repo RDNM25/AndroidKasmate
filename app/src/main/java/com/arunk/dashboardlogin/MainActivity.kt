@@ -4,14 +4,20 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.exclude
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.safeDrawingPadding
+import androidx.compose.foundation.layout.ime
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.arunk.dashboardlogin.ui.theme.DashboardLoginTheme
 
 class MainActivity : ComponentActivity() {
@@ -25,7 +31,7 @@ class MainActivity : ComponentActivity() {
                 Surface(
                     modifier = Modifier
                         .fillMaxSize()
-                        .safeDrawingPadding(),
+                        .windowInsetsPadding(WindowInsets.safeDrawing.exclude(WindowInsets.ime)),
                     color = MaterialTheme.colorScheme.background
                 ) {
                     val navController = rememberNavController()
@@ -58,7 +64,7 @@ class MainActivity : ComponentActivity() {
                             )
                         }
 
-                        // Halaman 2: Uang Kas (home setelah login)
+                        // Halaman 2: Uang Kas + Data Siswa (home setelah login)
                         composable("kas") {
                             KasScreen(
                                 onProfileClick = {
@@ -66,6 +72,33 @@ class MainActivity : ComponentActivity() {
                                 },
                                 onHistoryClick = {
                                     navController.navigate("history")
+                                },
+                                onWithdrawClick = {
+                                    navController.navigate("withdraw")
+                                },
+                                onAddStudentClick = {
+                                    navController.navigate("add_student")
+                                },
+                                onStudentClick = { id ->
+                                    navController.navigate("student_detail/$id")
+                                }
+                            )
+                        }
+
+                        // Halaman 2b: Tarik Kas
+                        composable("withdraw") {
+                            WithdrawScreen(
+                                onBack = {
+                                    navController.popBackStack()
+                                }
+                            )
+                        }
+
+                        // Halaman 2c: Tambah Siswa
+                        composable("add_student") {
+                            AddStudentScreen(
+                                onBack = {
+                                    navController.popBackStack()
                                 }
                             )
                         }
@@ -89,6 +122,22 @@ class MainActivity : ComponentActivity() {
                         // Halaman 4: Riwayat Transaksi
                         composable("history") {
                             HistoryScreen(
+                                onBack = {
+                                    navController.popBackStack()
+                                }
+                            )
+                        }
+
+                        // Halaman 5: Detail Siswa
+                        composable(
+                            route = "student_detail/{studentId}",
+                            arguments = listOf(
+                                navArgument("studentId") { type = NavType.LongType }
+                            )
+                        ) { backStackEntry ->
+                            val studentId = backStackEntry.arguments?.getLong("studentId") ?: -1L
+                            StudentDetailScreen(
+                                studentId = studentId,
                                 onBack = {
                                     navController.popBackStack()
                                 }
