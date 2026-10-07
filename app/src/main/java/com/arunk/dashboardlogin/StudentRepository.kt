@@ -18,11 +18,6 @@ data class Siswa(
     val payments: List<PaymentRecord> = emptyList()
 )
 
-/**
- * Simple in-memory store for per-student dues (uang kas per siswa).
- * Note: resets when the app process is killed, same limitation the
- * rest of the app's in-memory data has (no Room/DataStore wired up yet).
- */
 object StudentRepository {
     val students: SnapshotStateList<Siswa> = mutableStateListOf()
 
@@ -35,10 +30,6 @@ object StudentRepository {
 
     fun getById(id: Long): Siswa? = students.firstOrNull { it.id == id }
 
-    /**
-     * Records a payment from a student, reducing what they owe and
-     * adding the payment to the shared class fund (KasRepository).
-     */
     fun recordPayment(id: Long, amount: Long): Boolean {
         val index = students.indexOfFirst { it.id == id }
         if (index == -1 || amount <= 0) return false

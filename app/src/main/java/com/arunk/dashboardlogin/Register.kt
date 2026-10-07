@@ -60,7 +60,6 @@ fun RegisterScreen(
             .verticalScroll(rememberScrollState())
             .imePadding()
     ) {
-        // Curved red header
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -99,7 +98,6 @@ fun RegisterScreen(
             }
         }
 
-        // White form card
         Column(
             modifier = Modifier
                 .fillMaxSize()

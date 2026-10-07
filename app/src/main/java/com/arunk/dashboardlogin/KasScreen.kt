@@ -49,7 +49,6 @@ fun KasScreen(
             .padding(20.dp)
             .verticalScroll(rememberScrollState())
     ) {
-        // Top bar: profile button (left) + history button (right)
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -89,7 +88,6 @@ fun KasScreen(
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        // Total balance card
         Card(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(20.dp),

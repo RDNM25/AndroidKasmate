@@ -103,7 +103,7 @@ class MainActivity : ComponentActivity() {
                             )
                         }
 
-                        // Halaman 3: Dashboard (dibuka lewat ikon profil)
+                        // Halaman 3: Dashboard
                         composable("dashboard") {
                             DashboardScreen(
                                 onBack = {
