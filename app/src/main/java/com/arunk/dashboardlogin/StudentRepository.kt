@@ -48,13 +48,15 @@ object StudentRepository {
         nextId = (students.maxOfOrNull { it.id } ?: 0L) + 1L
     }
 
-    fun addSiswa(nama: String, owed: Long) {
+    fun addSiswa(nama: String, owed: Long): Boolean {
         val student = Siswa(id = nextId++, nama = nama, owed = owed)
         students.add(student)
         if (!persist()) {
             students.remove(student)
             nextId--
+            return false
         }
+        return true
     }
 
     fun getById(id: Long): Siswa? = students.firstOrNull { it.id == id }
