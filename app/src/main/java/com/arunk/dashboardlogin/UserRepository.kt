@@ -19,6 +19,7 @@ object UserRepository {
     private const val HASH_ITERATIONS = 120_000
     private const val HASH_BITS = 256
     private val users = mutableListOf<UserAccount>()
+    var currentUser: String? = null
 
     fun initialize() {
         users.clear()
@@ -55,7 +56,9 @@ object UserRepository {
         val salt = Base64.decode(account.salt, Base64.NO_WRAP)
         val expected = Base64.decode(account.passwordHash, Base64.NO_WRAP)
         val actual = Base64.decode(hashPassword(password, salt), Base64.NO_WRAP)
-        return MessageDigest.isEqual(expected, actual)
+        val authenticated = MessageDigest.isEqual(expected, actual)
+        if (authenticated) currentUser = account.username
+        return authenticated
     }
 
     private fun hashPassword(password: String, salt: ByteArray): String {
