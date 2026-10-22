@@ -59,7 +59,14 @@ object KasRepository {
         nextId = (transaksiList.maxOfOrNull { it.id } ?: 0L) + 1L
     }
 
-    fun tambahKas(amount: Long, note: String): Boolean {
+    fun tambahKas(amount: Long, note: String): Boolean =
+        tambahKas(amount, note, emptyMap())
+
+    internal fun tambahKas(
+        amount: Long,
+        note: String,
+        additionalValues: Map<String, String>
+    ): Boolean {
         if (amount <= 0) return false
         val newBalance = runCatching { Math.addExact(saldo.value, amount) }.getOrNull() ?: return false
 
@@ -72,7 +79,7 @@ object KasRepository {
         )
         transaksiList.add(0, transaction)
         saldo.value = newBalance
-        if (!persist()) {
+        if (!persist(additionalValues)) {
             transaksiList.remove(transaction)
             saldo.value -= amount
             nextId--
@@ -102,7 +109,7 @@ object KasRepository {
         return true
     }
 
-    private fun persist(): Boolean {
+    private fun persist(additionalValues: Map<String, String> = emptyMap()): Boolean {
         val savedTransactions = JSONArray()
         transaksiList.forEach { transaction ->
             savedTransactions.put(
@@ -114,7 +121,7 @@ object KasRepository {
                     .put("date", transaction.date)
             )
         }
-        return LocalDataStore.write(STORAGE_KEY, savedTransactions.toString())
+        return LocalDataStore.writeAll(additionalValues + (STORAGE_KEY to savedTransactions.toString()))
     }
 }
 
