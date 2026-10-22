@@ -67,21 +67,28 @@ object StudentRepository {
 
         val current = students[index]
         if (amount > current.owed) return false
-        if (!KasRepository.tambahKas(amount, "Pembayaran dari ${current.nama}")) return false
 
         val updatedPayments = current.payments + PaymentRecord(
             amount = amount,
             date = dateFormatter.format(Date())
         )
         students[index] = current.copy(owed = current.owed - amount, payments = updatedPayments)
-        if (!persist()) {
+        val studentState = serializeStudents()
+        if (!KasRepository.tambahKas(
+                amount,
+                "Pembayaran dari ${current.nama}",
+                mapOf(STORAGE_KEY to studentState)
+            )
+        ) {
             students[index] = current
             return false
         }
         return true
     }
 
-    private fun persist(): Boolean {
+    private fun persist(): Boolean = LocalDataStore.write(STORAGE_KEY, serializeStudents())
+
+    private fun serializeStudents(): String {
         val savedStudents = JSONArray()
         students.forEach { student ->
             val payments = JSONArray()
@@ -96,6 +103,6 @@ object StudentRepository {
                     .put("payments", payments)
             )
         }
-        return LocalDataStore.write(STORAGE_KEY, savedStudents.toString())
+        return savedStudents.toString()
     }
 }
