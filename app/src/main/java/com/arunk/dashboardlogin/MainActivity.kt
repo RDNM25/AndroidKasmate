@@ -114,6 +114,7 @@ class MainActivity : ComponentActivity() {
                                     navController.popBackStack()
                                 },
                                 onLogout = {
+                                    UserRepository.currentUser = null
                                     navController.navigate("login") {
                                         popUpTo("kas") {
                                             inclusive = true
