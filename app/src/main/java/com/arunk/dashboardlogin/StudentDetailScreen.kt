@@ -151,10 +151,14 @@ fun StudentDetailScreen(
                         successMessage = ""
                     }
                     else -> {
-                        StudentRepository.recordPayment(siswa.id, amount)
-                        errorMessage = ""
-                        successMessage = "Pembayaran berhasil dicatat"
-                        paymentInput = ""
+                        if (StudentRepository.recordPayment(siswa.id, amount)) {
+                            errorMessage = ""
+                            successMessage = "Pembayaran berhasil dicatat"
+                            paymentInput = ""
+                        } else {
+                            successMessage = ""
+                            errorMessage = "Jumlah bayar melebihi tunggakan atau gagal disimpan"
+                        }
                     }
                 }
             },

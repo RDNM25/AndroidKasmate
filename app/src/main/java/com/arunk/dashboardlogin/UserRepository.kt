@@ -6,7 +6,6 @@ data class UserAccount(
 )
 object UserRepository {
     private val users = mutableListOf<UserAccount>()
-    var currentUser: String? = null
 
     fun register(username: String, password: String): Boolean {
         val exists = users.any { it.username.equals(username, ignoreCase = true) }
@@ -17,13 +16,8 @@ object UserRepository {
     }
 
     fun authenticate(username: String, password: String): Boolean {
-        val matched = users.find {
+        return users.any {
             it.username.equals(username, ignoreCase = true) && it.password == password
         }
-        if (matched != null) {
-            currentUser = matched.username
-            return true
-        }
-        return false
     }
 }
