@@ -18,6 +18,11 @@ object LocalDataStore {
 
     fun read(key: String): String? = preferences.getString(key, null)
 
-    fun write(key: String, value: String): Boolean =
-        preferences.edit().putString(key, value).commit()
+    fun write(key: String, value: String): Boolean = writeAll(mapOf(key to value))
+
+    fun writeAll(values: Map<String, String>): Boolean {
+        val editor = preferences.edit()
+        values.forEach { (key, value) -> editor.putString(key, value) }
+        return editor.commit()
+    }
 }
