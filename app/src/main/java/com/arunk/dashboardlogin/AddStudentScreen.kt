@@ -126,11 +126,15 @@ fun AddStudentScreen(onBack: () -> Unit) {
                         successMessage = ""
                     }
                     else -> {
-                        StudentRepository.addSiswa(namaInput.trim(), owed)
-                        namaInput = ""
-                        owedInput = ""
-                        errorMessage = ""
-                        successMessage = "Siswa berhasil ditambahkan"
+                        if (StudentRepository.addSiswa(namaInput.trim(), owed)) {
+                            namaInput = ""
+                            owedInput = ""
+                            errorMessage = ""
+                            successMessage = "Siswa berhasil ditambahkan"
+                        } else {
+                            errorMessage = "Data siswa gagal disimpan"
+                            successMessage = ""
+                        }
                     }
                 }
             },
