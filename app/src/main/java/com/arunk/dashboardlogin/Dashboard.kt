@@ -25,6 +25,7 @@ fun DashboardScreen(
     onBack: () -> Unit,
     onLogout: () -> Unit
 ) {
+    val username = UserRepository.currentUser ?: "Admin"
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -54,7 +55,7 @@ fun DashboardScreen(
             Spacer(modifier = Modifier.height(20.dp))
 
             Text(
-                text = "Selamat datang, Admin!",
+                text = "Selamat datang, $username!",
                 style = MaterialTheme.typography.bodyLarge
             )
 
